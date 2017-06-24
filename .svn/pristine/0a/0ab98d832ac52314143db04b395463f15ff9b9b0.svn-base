@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.medicalsupport.mapper.MemberMapper">
+    <resultMap type="Member" id="memberResultMap">
+        <result column="MemberID" property="memberID" />
+        <result column="CardNo" property="cardNo" />
+        <result column="CardCode" property="cardCode" />
+        <result column="CardStatus" property="cardStatus"/>
+        <result column="CardGrade" property="cardGrade"/>
+        <result column="Name" property="name"/>
+        <result column="Sex" property="sex"/>
+        <result column="BirthDate" property="birthDate"/>
+        <result column="IDCardType" property="idCardType"/>
+        <result column="IDNumber" property="idNumber"/>
+        <result column="Telephone" property="telephone"/>
+        <result column="Mobile" property="mobile"/>
+        <result column="EmergencyPhone" property="emergencyPhone"/>
+        <result column="Email" property="email"/>
+        <result column="Address" property="address"/>
+        <result column="ZipCode" property="zipCode"/>
+        <result column="OpenDate" property="openDate"/>
+        <result column="ValidateDate" property="validateDate"/>
+        <result column="Discount" property="discount"/>
+        <result column="Balance" property="balance"/>
+        <result column="Password" property="password"/>
+        <result column="TotalPoints" property="totalPoints"/>
+        <result column="TotalConsumption" property="totalConsumption"/>
+        <result column="TotalRecharge" property="totalRecharge"/>
+        <result column="TotalCount" property="totalCount"/>
+        <result column="MaxCount" property="maxCount"/>
+        <result column="Portraint" property="portraint"/>
+        <result column="AttachGUID" property="attachGUID"/>
+        <result column="Note" property="note"/>
+        <result column="Province" property="province"/>
+        <result column="City" property="city"/>
+        <result column="District" property="district"/>
+        <result column="Hometown" property="hometown"/>
+        <result column="Nationality" property="nationality"/>
+        <result column="Creator" property="creator"/>
+        <result column="CreateTime" property="createTime"/>
+        <result column="Editor" property="editor"/>
+        <result column="EditTime" property="editTime"/>
+        <result column="DeptID" property="deptID"/>
+        <result column="CompanyID" property="companyID"/>
+        <result column="Year" property="year"/>
+        <result column="Month" property="month"/>
+    </resultMap>
+    
+    <select id="listMember" parameterType="MemberReqParam" resultMap="memberResultMap">
+        select * from member where 1=1
+        <if test="memberID!=null and memberID!=''">
+            and MemberID like CONCAT('%','${memberID}','%' )
+        </if>
+        <if test="memberName!=null and memberName!=''">
+            and Name like CONCAT('%','${memberName}','%' ) 
+        </if>
+        <if test="cardNo!=null and cardNo!=''">
+            and cardno like CONCAT('%','${cardNo}','%' ) 
+        </if>
+        <if test="idNumber!=null and idNumber!=''">
+            and idNumber like CONCAT('%','${idNumber}','%' ) 
+        </if>
+    </select>
+    
+    <select id="totalPageCount" parameterType="MemberReqParam" resultType="int">
+        select count(1) from member where 1=1
+        <if test="memberID!=null and memberID!=''">
+            and memberid like CONCAT('%','${memberID}','%' )
+        </if>
+        <if test="memberName!=null and memberName!=''">
+            and name like CONCAT('%','${memberName}','%' ) 
+        </if>
+        <if test="cardNo!=null and cardNo!=''">
+            and cardno like CONCAT('%','${cardNo}','%' ) 
+        </if>
+        <if test="idNumber!=null and idNumber!=''">
+            and idNumber like CONCAT('%','${idNumber}','%' ) 
+        </if>
+    </select>
+    
+    <select id="getMemberByID" parameterType="String" resultMap="memberResultMap">
+        select * 
+        from member where memberID = #{memberID}
+    </select>
+    
+    <insert id="insertMember" parameterType="Member" useGeneratedKeys="true" keyProperty="memberID">
+        insert into member (AdminName,Password,Purview) values (#{AdminName},#{Password},#{Purview});
+    </insert>
+    
+    <update id="updateMember" parameterType="Member">
+        update admin set
+        AdminName = #{AdminName},
+        Password = #{Password},
+        Purview = #{Purview}
+        where 
+        adminID=#{adminID}
+    </update>
+    
+    <update id="updateMemberPoints" parameterType="Member">
+        update member set
+        totalPoints = #{totalPoints}
+        where 
+        memberID=#{memberID}
+    </update>
+</mapper>

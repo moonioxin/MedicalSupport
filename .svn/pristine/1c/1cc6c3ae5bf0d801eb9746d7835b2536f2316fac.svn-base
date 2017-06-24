@@ -1,0 +1,23 @@
+package com.medicalsupport.mapper;
+
+import com.medicalsupport.httpentity.MemberReqParam;
+
+import java.util.List;
+
+import com.medicalsupport.entity.Member;
+
+public interface MemberMapper {
+    public List<Member> listMember(MemberReqParam memberReqParam);
+    
+    public int totalPageCount(MemberReqParam memberReqParam);
+    
+    public Member getMemberByID(String memberID);
+    
+    public int insertMember(Member member);
+    
+    public int updateMember(Member member);
+    
+    public int updateMemberPoints(Member member);
+    
+    public void deleteMembers(String[] allId);
+}

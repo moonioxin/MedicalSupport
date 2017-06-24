@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.medicalsupport.mapper.ProductMapper">
+    
+    <resultMap type="Product" id="productResultMap">
+        <result column="ID" property="id" />
+        <result column="productname" property="productName" />
+        <result column="department" property="department" />
+        <result column="departmentname" property="departmentName" />
+        <result column="needpoint" property="needPoint"/>
+        <result column="needcash" property="needCash"/>
+        <result column="Creator" property="creator"/>
+        <result column="CreateTime" property="createTime"/>
+    </resultMap>
+    
+    <resultMap type="Finance" id="financeResultMap">
+        <result column="ID" property="id" />
+        <result column="productname" property="productName" />
+        <result column="needpoint" property="needPoint"/>
+        <result column="needcash" property="needCash"/>
+        <result column="total" property="total"/>
+        <result column="totalExchangePoints" property="totalExchangePoints"/>
+        <result column="totalExchangeAmount" property="totalExchangeAmount"/>
+        <result column="totalCash" property="totalCash"/>
+    </resultMap>
+    
+    <select id="getProductInfo" parameterType="Product" resultMap="productResultMap">
+        select ID,productname,department,needpoint,needcash,Creator,CreateTime from product where 1=1
+        <if test="productName!=null and Password!=null">
+            and productName = #{productName} and password=#{Password}
+        </if>
+    </select>
+    
+    <select id="selectFinanceInfo" parameterType="map" resultMap="financeResultMap">
+        select p.id,p.productname,p.needpoint,p.needcash,count(1) as total,sum(ExchangePoints) as totalExchangePoints,sum(ExchangeAmount) as totalExchangeAmount,sum(cash) as totalCash
+            from pointexchange ex INNER JOIN product p ON ex.productid = p.ID where ex.CreateTime 
+            <if test="beforeDate!=null and beforeDate!='' and afterDate!=null and afterDate!=''">
+            BETWEEN #{beforeDate} AND #{afterDate}
+        	</if>
+        	GROUP BY p.id
+    </select>
+    
+    <select id="financeTotalPageCount" parameterType="map" resultType="int">        
+        select count(DISTINCT productid)
+            from pointexchange ex INNER JOIN product p ON ex.productid = p.ID where 1=1 
+            <if test="beforeDate!=null and beforeDate!='' and afterDate!=null and afterDate!=''">
+            	and ex.CreateTime BETWEEN #{beforeDate} AND #{afterDate}
+        	</if>
+    </select>
+    
+    <select id="listProduct" parameterType="ProductReqParam" resultMap="productResultMap">
+        select p.ID,p.productname,p.department,d.departmentname,p.needpoint,p.needcash,p.Creator,p.CreateTime from Product p left join department d
+        on p.department = d.id where 1=1
+        <if test="id!=null and id!=''">
+            and id = #{id}
+        </if>
+        <if test="productName!=null">
+            and productName like CONCAT('%','${productName}','%' ) 
+        </if>
+        <if test="departmentId!=null">
+            and department = #{departmentId}
+        </if>
+    </select>
+    
+    <select id="totalPageCount" parameterType="ProductReqParam" resultType="int">        
+        select count(1) from Product where 1=1
+        <if test="id!=null and id!=''">
+            and id = #{id}
+        </if>
+        <if test="productName!=null">
+            and productName like CONCAT('%','${productName}','%' ) 
+        </if>
+    </select>
+    
+    <insert id="insertProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
+        insert into Product (ID,productname,department,needpoint,needcash,Creator,CreateTime) values 
+                            (#{id},#{productName},#{department},#{needPoint},#{needCash},#{creator},#{createTime})
+    </insert>
+    
+    <update id="updateProduct" parameterType="Product">
+        update Product set
+        productName = #{productName},
+        department = #{department},
+        needPoint = #{needPoint},
+        needCash = #{needCash},
+        creator = #{creator},
+        createTime = #{createTime}
+        where 
+        id=#{id}
+    </update>
+    
+    <update id="updateProductSelective" parameterType="Product">
+        update Product set
+        <if test="productName!=null and productName!=''" >
+            productName = #{productName},
+        </if>
+        <if test="department!=null and department!=''" >
+            department = #{department},
+        </if>
+        <if test="needPoint!=null and needPoint!=''" >
+            needPoint = #{needPoint},
+        </if>
+        
+        <if test="needCash!=null and needCash!=''" >
+            needCash = #{needCash},
+        </if>
+        <if test="creator!=null and creator!=''" >
+            creator = #{creator},
+        </if>
+        <if test="createTime!=null and createTime!=''" >
+            createTime = #{createTime}
+        </if>
+        where 
+        id=#{id}
+    </update>
+    
+    <select id="getProductByID" parameterType="int" resultMap="productResultMap">
+        select *
+        from Product where id = #{id}
+    </select>
+    
+    <delete id="deleteProducts" >
+        delete from Product where
+        id in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+         #{item}
+       </foreach>
+    </delete>
+    
+    <select id="selectProductInfo" resultMap="productResultMap" parameterType="Integer">
+        select *
+        from Product where 1=1
+        <if test="_parameter!=null and _parameter!=''" >
+          and id = #{productId}
+        </if>
+    </select>
+</mapper>

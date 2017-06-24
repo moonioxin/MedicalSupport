@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.medicalsupport.entity.Admin" alias="Admin"/>
+		<typeAlias type="com.medicalsupport.httpentity.AdminReqParam" alias="AdminReqParam"/>
+		<typeAlias type="com.medicalsupport.entity.Member" alias="Member"/>
+		<typeAlias type="com.medicalsupport.httpentity.MemberReqParam" alias="MemberReqParam"/>   
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mybatis/Admin.xml"/>
+		<mapper resource="mybatis/Member.xml"/>
+	</mappers>
+	
+</configuration>

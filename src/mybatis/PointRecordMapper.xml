@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.medicalsupport.mapper.PointRecordMapper">
+
+    <resultMap type="PointRecord" id="pointRecordResultMap">
+    	<result column="id" property="id" />
+        <result column="MemberID" property="memberId" />
+        <result column="CardNo" property="cardNo" />
+        <result column="operationtype" property="operationType" />
+        <result column="changepoints" property="changePoints"/>
+        <result column="note" property="note"/>
+        <result column="Creator" property="creator"/>
+        <result column="CreateTime" property="createTime"/>
+        <result column="deptid" property="deptID"/>
+        <result column="companyid" property="companyID"/>
+    </resultMap>
+    
+    <select id="listPointRecord" parameterType="MemberReqParam" resultMap="pointRecordResultMap">
+        select * from pointrecord where 1=1
+        <if test="memberID!=null and memberID!=''">
+            and MemberID like CONCAT('%','${memberID}','%' )
+        </if>
+        <if test="cardNo!=null and cardNo!=''">
+            and cardno like CONCAT('%','${cardNo}','%' ) 
+        </if>
+    </select>
+    
+    <select id="totalCountPointRecord" parameterType="MemberReqParam" resultType="int">
+        select count(1) from pointrecord where 1=1
+        <if test="memberID!=null and memberID!=''">
+            and MemberID like CONCAT('%','${memberID}','%' )
+        </if>
+        <if test="cardNo!=null and cardNo!=''">
+            and cardno like CONCAT('%','${cardNo}','%' ) 
+        </if>
+    </select>
+    
+    <insert id="insertPointRecord" parameterType="PointRecord">
+        insert into PointRecord (MemberID,CardNo,operationType,changePoints,note,Creator,CreateTime,deptID,companyID) values 
+            (#{memberId},#{cardNo},#{operationType},#{changePoints},#{note},#{creator},#{createTime},#{deptId},#{companyId})
+    </insert>
+</mapper>

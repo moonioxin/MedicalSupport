@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.medicalsupport.mapper.DepartmentMapper">
+    
+    <resultMap type="Department" id="departmentResultMap">
+        <result column="ID" property="id" />
+        <result column="departmentName" property="departmentName" />
+        <result column="departmentCategory" property="departmentCategory" />
+        <result column="note" property="note"/>
+        <result column="deployment" property="deployment"/>
+        <result column="Creator" property="creator"/>
+        <result column="CreateTime" property="createTime"/>
+    </resultMap>
+    
+    <select id="getDepartmentInfo" parameterType="Department" resultMap="departmentResultMap">
+        select id,departmentName,departmentCategory,note,deployment,Creator,CreateTime from Department where 1=1
+        <if test="departmentName!=null and Password!=null">
+            and DepartmentName = #{departmentName} and password=#{Password}
+        </if>
+    </select>
+    
+    <select id="listDepartment" parameterType="DepartmentReqParam" resultMap="departmentResultMap">
+        select id,departmentName,departmentCategory,note,deployment,Creator,CreateTime from department where 1=1
+        <if test="id!=null and id!=''">
+            and id = #{id}
+        </if>
+        <if test="departmentName!=null">
+            and departmentName like CONCAT('%','${departmentName}','%' ) 
+        </if>
+    </select>
+    
+    <select id="totalPageCount" parameterType="DepartmentReqParam" resultType="int">        
+        select count(1) from department where 1=1
+        <if test="id!=null and id!=''">
+            and id = #{id}
+        </if>
+        <if test="departmentName!=null">
+            and DepartmentName like CONCAT('%','${departmentName}','%' ) 
+        </if>
+    </select>
+    
+    <insert id="insertDepartment" parameterType="Department" useGeneratedKeys="true" keyProperty="id">
+        insert into Department (departmentName,departmentCategory,note,deployment,Creator,CreateTime) values 
+                               (#{departmentName},#{departmentCategory},#{note},#{deployment},#{creator},#{createTime})
+    </insert>
+    
+    <update id="updateDepartment" parameterType="Department">
+        update Department set
+        departmentName = #{departmentName},
+        departmentCategory = #{departmentCategory},
+        note = #{note},
+        deployment = #{deployment},
+        creator = #{creator},
+        createTime = #{createTime}
+        where 
+        id=#{id}
+    </update>
+    
+    <select id="getDepartmentByID" parameterType="int" resultMap="departmentResultMap">
+        select *
+        from Department where id = #{id}
+    </select>
+    
+    <delete id="deleteDepartments" >
+        delete from Department where
+        id in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+         #{item}
+       </foreach>
+    </delete>
+    
+    <select id="getDepartmentList" resultType="map">
+		SELECT id as "id",departmentName as "departmentName" FROM department d
+	</select>
+</mapper>

@@ -1,0 +1,14 @@
+package com.medicalsupport.service;
+
+import com.medicalsupport.entity.PointInfo;
+
+public interface PointService {
+    //充值，更新积分信息
+	int pointRecharge(PointInfo pointInfo);
+	
+	//查询积分信息
+	PointInfo queryPointInfo(String cardNo);
+	
+	//更新积分信息
+	int updatePointInfo(PointInfo pointInfo);
+}

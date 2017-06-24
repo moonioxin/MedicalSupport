@@ -1,0 +1,65 @@
+package com.medicalsupport.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class NavigationController {
+	
+	@RequestMapping(value = "/introduction")
+	public ModelAndView about1() {
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("about/introduction");
+		return mv;
+	}
+	
+	@RequestMapping(value = "/notion")
+	public ModelAndView about2() {
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("about/notion");
+		return mv;
+	}
+	
+	@RequestMapping(value = "/organizationalStructure")
+	public ModelAndView about3() {
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("about/organizationalStructure");
+		return mv;
+	}
+	
+	@RequestMapping(value = "/honor")
+	public ModelAndView about4() {
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("about/honor");
+		return mv;
+	}
+	
+	@RequestMapping(value = "/contactUs")
+	public ModelAndView contactUs() {
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("contact/contactUs");
+		return mv;
+	}
+	
+	@RequestMapping(value = "/pointCheck")
+	public ModelAndView pointCheck() {
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("pointManager/pointCheck");
+		return mv;
+	}
+	
+	@RequestMapping(value = "/pointChange")
+	public ModelAndView pointChange() {
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("pointManager/pointChange");
+		return mv;
+	}
+	
+	@RequestMapping(value = "/pointTransference")
+	public ModelAndView pointTransference() {
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("pointManager/pointTransference");
+		return mv;
+	}
+}

@@ -1,0 +1,33 @@
+package com.medicalsupport.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.medicalsupport.entity.PointInfo;
+import com.medicalsupport.mapper.PointInfoMapper;
+import com.medicalsupport.service.PointService;
+
+@Service
+public class PointServiceImpl implements PointService {
+	
+	@Autowired
+	PointInfoMapper pointInfoMapper;
+    //积分充值
+	public int pointRecharge(PointInfo pointInfo){
+		return pointInfoMapper.updatePointInfo(pointInfo);
+    }
+	
+	//查询积分信息
+	public PointInfo queryPointInfo(String cardNo){
+		PointInfo pointInfo = new PointInfo();
+		pointInfo = pointInfoMapper.selectPointInfo(cardNo);
+		return pointInfo;
+	}
+	
+	//更新充值信息
+	public int updatePointInfo(PointInfo pointInfo){
+		
+		return pointInfoMapper.updatePointInfo(pointInfo);
+		
+	}
+}

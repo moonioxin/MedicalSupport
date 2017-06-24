@@ -1,0 +1,96 @@
+package com.medicalsupport.entity;
+
+import java.sql.Timestamp;
+
+public class PointExchange {
+	private int ID;
+	private String memberID;
+	private String cardNo;
+	private String exchangeGift;
+	private int exchangePoints;
+	private String note;
+	private String creator;
+	private Timestamp createTime;
+	private String deptID;
+	private String companyID;
+
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int iD) {
+		ID = iD;
+	}
+
+	public String getMemberID() {
+		return memberID;
+	}
+
+	public void setMemberID(String memberID) {
+		this.memberID = memberID;
+	}
+
+	public String getCardNo() {
+		return cardNo;
+	}
+
+	public void setCardNo(String cardNo) {
+		this.cardNo = cardNo;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+
+	public Timestamp getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getCompanyID() {
+		return companyID;
+	}
+
+	public void setCompanyID(String companyID) {
+		this.companyID = companyID;
+	}
+
+	public String getDeptID() {
+		return deptID;
+	}
+
+	public void setDeptID(String deptID) {
+		this.deptID = deptID;
+	}
+
+	public String getExchangeGift() {
+		return exchangeGift;
+	}
+
+	public void setExchangeGift(String exchangeGift) {
+		this.exchangeGift = exchangeGift;
+	}
+
+	public int getExchangePoints() {
+		return exchangePoints;
+	}
+
+	public void setExchangePoints(int exchangePoints) {
+		this.exchangePoints = exchangePoints;
+	}
+}

@@ -1,0 +1,25 @@
+package com.medicalsupport.mapper;
+
+import java.util.List;
+
+import com.medicalsupport.entity.Product;
+import com.medicalsupport.httpentity.ProductReqParam;
+
+
+public interface ProductMapper {
+    public Product getProductInfo(Product product);
+    
+    public List<Product> listProduct(ProductReqParam productReqParam);
+    
+    public int totalPageCount(ProductReqParam productReqParam);
+    
+    public int insertProduct(Product product);
+    
+    public int updateProduct(Product product);
+    
+    public Product getProductByID(int id);
+    
+    public void deleteProducts(String[] ids);
+    
+    public List<Product> selectProductInfo();
+}

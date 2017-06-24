@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.medicalsupport.mapper.PointInfoMapper">
+    
+    <resultMap type="PointInfo" id="pointInfoResultMap">
+        <result column="MemberID" property="memberId" />
+        <result column="CardNo" property="cardNo" />
+        <result column="Name" property="name" />
+        <result column="IDNumber" property="idNumber"/>
+        <result column="leftpoints" property="leftPoints"/>
+        <result column="leftamount" property="leftAmount"/>
+        <result column="Creator" property="creator"/>
+        <result column="CreateTime" property="createTime"/>
+    </resultMap>
+    
+    <select id="listPointInfo" parameterType="MemberReqParam" resultMap="pointInfoResultMap">
+        select * from pointinfo where 1=1
+        <if test="memberID!=null and memberID!=''">
+            and MemberID like CONCAT('%','${memberID}','%' )
+        </if>
+        <if test="memberName!=null and memberName!=''">
+            and Name like CONCAT('%','${memberName}','%' ) 
+        </if>
+        <if test="cardNo!=null and cardNo!=''">
+            and cardno like CONCAT('%','${cardNo}','%' ) 
+        </if>
+        <if test="idNumber!=null and idNumber!=''">
+            and idNumber like CONCAT('%','${idNumber}','%' ) 
+        </if>
+        <if test="cardStatus!=null and cardStatus!=''">
+            and cardStatus = #{cardStatus}
+        </if>
+    </select>
+    
+    <select id="totalPageCountOfPointInfo" parameterType="MemberReqParam" resultType="int">
+        select count(1) from pointinfo where 1=1
+        <if test="memberID!=null and memberID!=''">
+            and MemberID like CONCAT('%','${memberID}','%' )
+        </if>
+        <if test="memberName!=null and memberName!=''">
+            and Name like CONCAT('%','${memberName}','%' ) 
+        </if>
+        <if test="cardNo!=null and cardNo!=''">
+            and cardno like CONCAT('%','${cardNo}','%' ) 
+        </if>
+        <if test="idNumber!=null and idNumber!=''">
+            and idNumber like CONCAT('%','${idNumber}','%' ) 
+        </if>
+        <if test="cardStatus!=null and cardStatus!=''">
+            and cardStatus = #{cardStatus}
+        </if>
+    </select>
+    
+    <insert id="insert" parameterType="PointInfo">
+        insert into PointInfo (MemberID,CardNo,Name,IDNumber,leftpoints,leftamount,Creator,CreateTime) values 
+            (#{memberId},#{cardNo},#{name},#{idNumber},#{leftPoints},#{leftAmount},#{creator},#{createTime})
+    </insert>
+    
+    <update id="updatePointInfo" parameterType="PointInfo">
+        update PointInfo set
+        leftamount = #{leftAmount},
+        leftpoints = #{leftPoints}
+        where 
+        CardNo=#{cardNo}
+    </update>
+    
+    <update id="updatePointOnly" parameterType="PointInfo">
+        update PointInfo set
+        leftpoints = #{leftPoints}
+        where 
+        CardNo=#{cardNo}
+    </update>
+    
+    <update id="updatePointInfoSelective" parameterType="PointInfo">
+        update PointInfo set
+        <if test="cardNo!=null and cardNo!=''" >
+            cardno = #{cardNo}
+        </if>
+        where 
+        memberid=#{memberId}
+    </update>
+    
+    
+    
+    <select id="selectPointInfo" parameterType="java.lang.String" resultMap="pointInfoResultMap">
+        select pi.MemberID,pi.CardNo,pi.Name,pi.IDNumber,pi.leftpoints,pi.leftamount,pi.Creator,pi.CreateTime
+        from PointInfo pi left join member m on pi.memberid = m.memberid where pi.CardNo = #{cardNo} and m.cardStatus = 0
+    </select>
+    
+    <select id="selectPointInfoByIdNumber" parameterType="java.lang.String" resultMap="pointInfoResultMap">
+        select *
+        from PointInfo where idNumber = #{idNumber}
+    </select>
+    
+    <select id="selectPointInfoByMemberId" parameterType="java.lang.String" resultMap="pointInfoResultMap">
+        select *
+        from PointInfo where memberid = #{memberId}
+    </select>
+       
+    <delete id="deleteAdmins" >
+        delete from admin where
+        AdminID in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+         #{item}
+       </foreach>
+    </delete>
+</mapper>

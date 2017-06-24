@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.medicalsupport.mapper.ProductMapper">
+    
+    <resultMap type="Product" id="productResultMap">
+        <result column="ID" property="id" />
+        <result column="productname" property="productName" />
+        <result column="department" property="department" />
+        <result column="needpoint" property="needPoint"/>
+        <result column="needcash" property="needCash"/>
+        <result column="Creator" property="creator"/>
+        <result column="CreateTime" property="createTime"/>
+    </resultMap>
+    
+    <select id="getProductInfo" parameterType="Product" resultMap="productResultMap">
+        select ID,productname,department,needpoint,needcash,Creator,CreateTime from product where 1=1
+        <if test="productName!=null and Password!=null">
+            and productName = #{productName} and password=#{Password}
+        </if>
+    </select>
+    
+    <select id="listProduct" parameterType="ProductReqParam" resultMap="productResultMap">
+        select ID,productname,department,needpoint,needcash,Creator,CreateTime from Product where 1=1
+        <if test="id!=null and id!=''">
+            and id = #{id}
+        </if>
+        <if test="productName!=null">
+            and productName like CONCAT('%','${productName}','%' ) 
+        </if>
+    </select>
+    
+    <select id="totalPageCount" parameterType="ProductReqParam" resultType="int">        
+        select count(1) from Product where 1=1
+        <if test="id!=null and id!=''">
+            and id = #{id}
+        </if>
+        <if test="productName!=null">
+            and productName like CONCAT('%','${productName}','%' ) 
+        </if>
+    </select>
+    
+    <insert id="insertProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
+        insert into Product (ID,productname,department,needpoint,needcash,Creator,CreateTime) values 
+                            (#{id},#{productName},#{department},#{needPoint},#{needCash},#{creator},#{createTime})
+    </insert>
+    
+    <update id="updateProduct" parameterType="Product">
+        update Product set
+        productName = #{productName},
+        department = #{department},
+        needPoint = #{needPoint},
+        needCash = #{needCash},
+        creator = #{creator},
+        createTime = #{createTime}
+        where 
+        id=#{id}
+    </update>
+    
+    <select id="getProductByID" parameterType="int" resultMap="productResultMap">
+        select *
+        from Product where id = #{id}
+    </select>
+    
+    <delete id="deleteProducts" >
+        delete from Product where
+        id in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+         #{item}
+       </foreach>
+    </delete>
+    
+    <select id="selectProductInfo" resultMap="productResultMap">
+        select *
+        from Product
+    </select>
+</mapper>

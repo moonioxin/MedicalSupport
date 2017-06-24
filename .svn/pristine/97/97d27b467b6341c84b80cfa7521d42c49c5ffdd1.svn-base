@@ -1,0 +1,15 @@
+package com.medicalsupport.mapper;
+
+import java.util.List;
+
+import com.medicalsupport.entity.Admin;
+import com.medicalsupport.entity.PointInfo;
+import com.medicalsupport.httpentity.AdminReqParam;
+
+
+public interface PointInfoMapper {
+    public int updatePointInfo(PointInfo pointInfo);
+    
+    public PointInfo selectPointInfo(String cardNo);
+    
+}

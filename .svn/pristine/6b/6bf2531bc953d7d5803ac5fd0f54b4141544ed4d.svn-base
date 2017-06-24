@@ -1,0 +1,88 @@
+package com.medicalsupport.service.impl;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.medicalsupport.entity.Product;
+import com.medicalsupport.httpentity.ProductReqParam;
+import com.medicalsupport.service.ProductService;
+import com.medicalsupport.mapper.ProductMapper;
+import com.medicalsupport.httpentity.ProductReqParam;
+
+import jxl.CellType;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+	@Autowired
+    private ProductMapper productMapper;
+	
+    public List<Product> listProduct(ProductReqParam ProductReqParam){
+    	return productMapper.listProduct(ProductReqParam);
+    }
+    
+    public int totalPageCount(ProductReqParam ProductReqParam){
+    	return productMapper.totalPageCount(ProductReqParam);
+    }
+    
+    public boolean insertProduct(Product Product){
+        int count = productMapper.insertProduct(Product);
+		
+		if(count == 1){
+			return true;
+		}else{
+			return false;
+		}
+    }
+
+	public boolean updateProduct(Product Product) {
+		int count = productMapper.updateProduct(Product);
+		if(count == 1) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public boolean updateProductSelective(Product Product) {
+		int count = productMapper.updateProductSelective(Product);
+		if(count == 1) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+    
+	public Product getProductByID(int id) {
+		return productMapper.getProductByID(id);
+	}
+	
+	public void deleteProducts(String[] allId) {
+		productMapper.deleteProducts(allId);
+	}
+	
+	public List<Product> selectProductInfo(String productId) {
+		Integer id = null;
+		if(productId!=null && productId!=""){
+			id = Integer.parseInt(productId);
+		}
+		return productMapper.selectProductInfo(id);
+
+	}
+}

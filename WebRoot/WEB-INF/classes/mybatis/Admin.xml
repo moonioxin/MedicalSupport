@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.medicalsupport.mapper.AdminMapper">
+    
+    <resultMap type="Admin" id="adminResultMap">
+        <result column="adminid" property="AdminID" />
+        <result column="adminname" property="AdminName" />
+        <result column="password" property="Password" />
+        <result column="purview" property="Purview"/>
+        <result column="adminType" property="adminType"/>
+        <result column="departmentId" property="departmentId"/>
+        <result column="departmentName" property="departmentName"/>
+    </resultMap>
+    
+    <select id="getAdminInfo" parameterType="Admin" resultMap="adminResultMap">
+        select adminid,adminname,password,purview,adminType,departmentId,departmentName from admin where 1=1
+        <if test="AdminName!=null and Password!=null">
+            and AdminName = #{AdminName} and password=#{Password}
+        </if>
+    </select>
+    
+    <select id="listAdmin" parameterType="AdminReqParam" resultMap="adminResultMap">
+        select adminid,adminname,password,purview,admintype,departmentId,departmentName from admin where 1=1
+        <if test="adminID!=null and adminID!=''">
+            and adminid = #{adminID}
+        </if>
+        <if test="adminName!=null">
+            and AdminName like CONCAT('%','${adminName}','%' ) 
+        </if>
+    </select>
+    
+    <select id="totalPageCount" parameterType="AdminReqParam" resultType="int">        
+        select count(1) from admin where 1=1
+        <if test="adminID!=null and adminID!=''">
+            and adminid = #{adminID}
+        </if>
+        <if test="adminName!=null">
+            and AdminName like CONCAT('%','${adminName}','%' ) 
+        </if>
+    </select>
+    
+    <insert id="insertAdmin" parameterType="Admin" useGeneratedKeys="true" keyProperty="adminID">
+        insert into admin (AdminName,Password,Purview,adminType,departmentId,departmentName) values (#{AdminName},#{Password},#{Purview},#{adminType},#{departmentId},#{departmentName});
+    </insert>
+    
+    <update id="updateAdmin" parameterType="Admin">
+        update admin set
+        AdminName = #{AdminName},
+        Password = #{Password},
+        Purview = #{Purview},
+        adminType = #{adminType},
+        departmentId = #{departmentId},
+        departmentName = #{departmentName}
+        where 
+        adminID=#{adminID}
+    </update>
+    
+    <select id="getAdminByID" parameterType="int" resultMap="adminResultMap">
+        select *
+        from Admin where AdminID = #{id}
+    </select>
+    
+    <delete id="deleteAdmins" >
+        delete from admin where
+        AdminID in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+         #{item}
+       </foreach>
+    </delete>
+</mapper>
