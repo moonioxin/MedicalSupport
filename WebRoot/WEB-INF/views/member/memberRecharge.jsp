@@ -48,7 +48,7 @@ body {
 			<table border="0" cellpadding="0" cellspacing="0">
 			    <tr class="info">
 					<th><label id="memberInfo_cardNo">会员号:</label></th>
-					<td><input type="text" name="cardNo" id="cardNo" class="input_txt" maxlength=20 value="${pointInfo.cardNo }" />
+					<td><input type="text" name="cardNo" id="cardNo" class="input_txt" maxlength=20 value="${pointInfo.cardNo }" /><label style="color:red;">*</label>
 					</td>
 				</tr>
 				<tr class="info">
@@ -64,13 +64,11 @@ body {
 				<tr class="info">
 					<th><label id="memberInfo_leftPoints">剩余积分:</label></th>
 					<td><input type="text" name="leftPoints" id="leftPoints" class="input_txt" readonly="readonly" maxlength=20 value="${pointInfo.totalPoints}" />
-					<label style="color:red;">*</label>
 					</td>
 				</tr>
 				<tr class="info">
 					<th><label id="memberInfo_leftAmount">剩余金额:</label></th>
 					<td><input type="text" name="leftAmount" id="leftAmount" class="input_txt" readonly="readonly" maxlength=20 value="${pointInfo.totalPoints}" />
-					<label style="color:red;">*</label>
 					</td>
 				</tr>
 				<tr class="info">
@@ -114,7 +112,7 @@ body {
 		        type: "post",
 		        dataType: "json",
 		        url: 'selectPointInfo.do',
-		        data: {cardNo: cardNo},
+		        data: {cardNo: cardNo, productId: ""},
 		        success: function (data) {
 		            $("#cardNo").val(data.result.cardNo);
 		            $("#name").val(data.result.name);
@@ -180,7 +178,7 @@ body {
 			$("#rechargeAmount").focus();
 			return false;
 		}
-		
+
 
 		if (confirm("确定充值吗？")) {  
 	        return true;

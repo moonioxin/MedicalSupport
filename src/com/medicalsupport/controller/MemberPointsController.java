@@ -74,16 +74,20 @@ public class MemberPointsController {
 		PointInfo pointInfo = new PointInfo();
 //		if(cardNo!=null && cardNo!="") {
 		pointInfo = pointService.queryPointInfo(cardNo);
-		
-		Product product = productService.getProductByID(productId);
-//		}else if(idNumber!=null && idNumber!=""){
-//			pointInfo = pointService.queryPointInfoByIdNumber(idNumber);
-//		}
-		BigDecimal extraCash = product.getNeedCash().subtract(pointInfo.getLeftAmount());
-		if(extraCash.compareTo(BigDecimal.ZERO)==1) {
-			pointInfo.setExtraCash(extraCash);
-		} else {
-			pointInfo.setExtraCash(BigDecimal.ZERO);
+		if(pointInfo != null) {
+			BigDecimal extraCash = BigDecimal.ZERO;
+			if(productId!=null) {
+				Product product = productService.getProductByID(productId);
+//				}else if(idNumber!=null && idNumber!=""){
+//					pointInfo = pointService.queryPointInfoByIdNumber(idNumber);
+//				}
+				extraCash = product.getNeedCash().subtract(pointInfo.getLeftAmount());
+			}
+			if(extraCash.compareTo(BigDecimal.ZERO)==1) {
+				pointInfo.setExtraCash(extraCash);
+			} else {
+				pointInfo.setExtraCash(BigDecimal.ZERO);
+			}
 		}
 		Gson gson = new Gson();
 		String resultString = gson.toJson(pointInfo);

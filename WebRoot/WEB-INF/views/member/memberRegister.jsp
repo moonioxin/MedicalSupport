@@ -31,7 +31,7 @@
 
     <!-- 会员注册 -->
     <div class="ipt geren">
-        <form method="get" action="saveMember.do" id="from1" method="post" onsubmit="return checkInfo();">
+        <form method="get" action="saveMemberView.do" id="from1" method="post" onsubmit="return checkInfo();">
             <!-- 会员号 -->
             <div class="ipt1">
                 <span><b>*</b>会员名</span><input id="name" type="text" placeholder="6-16个字符，只能数字、字母" name="name">
@@ -136,7 +136,7 @@
 				$("#mobile").focus();
 				return false;
 			}
-			if (password != repassword) {
+			if ($("#password").val().trim() != $("#repassword").val().trim()) {
 				alert(E00010);
 				$("#password").focus();
 				return false;

@@ -452,7 +452,7 @@ public class MemberManageController {
 //			Calendar c = Calendar.getInstance();
 //			String memberID = "" + c.get(Calendar.YEAR) + c.get((Calendar.MONTH) + 1) + c.get(Calendar.DAY_OF_MONTH) + c.get(Calendar.HOUR_OF_DAY) + c.get(Calendar.MINUTE) + c.get(Calendar.SECOND);
 			String idNumber = member.getIdNumber();
-			String birthDayString = idNumber.substring(6,9) + "-" + idNumber.substring(10,11) + "-" + idNumber.substring(12,13);
+			String birthDayString = idNumber.substring(6,10) + "-" + idNumber.substring(10,12) + "-" + idNumber.substring(12,14);
 			member.setBirthDate(birthDayString);
 			Date currentTime = new Date();
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -678,8 +678,68 @@ public class MemberManageController {
 		return "member/memberRecreateCard";
 	}
 	
-	@RequestMapping(value = "/register")
+	@RequestMapping(value = "/registerView")
 	public String memeberRegister() {
 		return "member/memberRegister";
+	}
+	
+	@RequestMapping(value = "/saveMemberView", method = {RequestMethod.POST, RequestMethod.GET})
+	public ModelAndView toSaveView(Member member,HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+		Admin admin = (Admin)session.getAttribute("admin");
+		member.setCardStatus("0");//启用
+		member.setCardGrade("1");//暂时就一种卡等级
+		member.setIdCardType("1");//1.身份证
+		member.setOpenDate(new Date());
+		if(member.getMemberID() == null || member.getMemberID() == "")
+		{
+//			Calendar c = Calendar.getInstance();
+//			String memberID = "" + c.get(Calendar.YEAR) + c.get((Calendar.MONTH) + 1) + c.get(Calendar.DAY_OF_MONTH) + c.get(Calendar.HOUR_OF_DAY) + c.get(Calendar.MINUTE) + c.get(Calendar.SECOND);
+			String idNumber = member.getIdNumber();
+			String year = idNumber.substring(6, 10);
+			String month = idNumber.substring(10,12);
+			String day = idNumber.substring(12,14);
+			
+			if(Integer.parseInt(year)<1900 || Integer.parseInt(month)<1 || Integer.parseInt(month)>12 || Integer.parseInt(day)<1 || Integer.parseInt(day)>31) {
+				mv.addObject("msg", "省份证输入有误!");
+			} else {
+				String birthDayString = year + "-" + month + "-" + day;
+				
+				member.setBirthDate(birthDayString);
+				Date currentTime = new Date();
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+				String dateString = formatter.format(currentTime);
+				member.setMemberID(dateString);
+				if(memberService.insertMember(member) == false)
+				{
+					if(admin != null) {
+						mv.addObject("msg", "添加会员失败!");
+					} else {
+						mv.addObject("msg", "会员注册失败!");
+					}
+				}
+				else
+				{
+					if(admin != null) {
+						mv.addObject("msg", "添加会员成功!");
+					} else {
+						mv.addObject("msg", "会员注册成功!");
+					}
+				}
+			}
+		}
+		else
+		{
+			if(memberService.updateMember(member) == false)
+			{
+				mv.addObject("msg", "保存失败!");
+			}
+			else
+			{
+				mv.addObject("msg", "保存成功!");
+			}
+		}
+		mv.setViewName("admin/save_result");
+		return mv;
 	}
 }

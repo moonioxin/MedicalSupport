@@ -33,7 +33,7 @@ $(function($){
 <div class="clear"></div>
 
 <a href="login.do" target="_black" style="float: right;font-family: Microsoft YaHei;">后台管理</a>
-<a href="register.do" target="_black" style="float: right;font-family: Microsoft YaHei;">会员注册&nbsp;|&nbsp;</a>
+<a href="registerView.do" target="_black" style="float: right;font-family: Microsoft YaHei;">会员注册&nbsp;|&nbsp;</a>
 
 </div> <div class="naver">
 <ul>

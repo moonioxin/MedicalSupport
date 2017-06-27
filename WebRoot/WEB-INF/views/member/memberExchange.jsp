@@ -82,23 +82,6 @@
 				                     ];
 				        $('#gridTable').flexOptions({params : params, newp : 1}).flexReload(); 
 	    });
-		
-		$("#cardNo").blur(function(){
-			cardNo = $("#cardNo").val().trim();
-		    $.ajax({
-		        type: "post",
-		        dataType: "json",
-		        url: 'selectPointInfo.do',
-		        data: {cardNo: cardNo},
-		        success: function (data) {
-		            $("#cardNo").val(data.result.cardNo);
-		            $("#name").val(data.result.name);
-		            $("#idNumber").val(data.result.idNumber);
-		            $("#leftPoints").val(data.result.leftPoints);
-		            $("#leftAmount").val(data.result.leftAmount);
-		        }
-		    });
-		  });
 	
 		//CHI追加button处理
 		$("#add").click(function() {
